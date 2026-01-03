@@ -16,9 +16,11 @@
         Background="#121212"
         FontFamily="Segoe UI"
         WindowStartupLocation="CenterScreen">
+
     <Window.DataContext>
         <vm:MainViewModel />
     </Window.DataContext>
+
     <Window.Resources>
         <!-- Palette -->
         <Color x:Key="AccentColor">#8A7CFF</Color>
@@ -228,7 +230,7 @@
             </Setter>
         </Style>
 
-        <!-- Data templates for views -->
+        <!-- Templates -->
         <DataTemplate x:Key="CryptoTemplate" DataType="{x:Type models:CategoryItem}">
             <views:CryptoView />
         </DataTemplate>
@@ -258,9 +260,7 @@
                     <ControlTemplate TargetType="ContentControl">
                         <ContentPresenter x:Name="contentPresenter"
                                           Content="{TemplateBinding Content}"
-                                          ContentTemplate="{TemplateBinding ContentTemplate}"
-                                          ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"
-                                          ContentStringFormat="{TemplateBinding ContentStringFormat}"/>
+                                          ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"/>
                         <ControlTemplate.Triggers>
                             <EventTrigger RoutedEvent="Loaded">
                                 <BeginStoryboard>
@@ -289,12 +289,16 @@
         </Grid.RowDefinitions>
 
         <!-- Sidebar -->
-        <Border Grid.Row="0" Grid.Column="0" Background="#141414" BorderBrush="{StaticResource BorderBrushLight}" BorderThickness="0 0 1 0">
+        <Border Grid.Row="0" Grid.Column="0"
+                Background="#141414"
+                BorderBrush="{StaticResource BorderBrushLight}"
+                BorderThickness="0 0 1 0">
             <DockPanel>
-                <StackPanel DockPanel.Dock="Top" Margin="14 16" Orientation="Vertical" Spacing="4">
+                <StackPanel DockPanel.Dock="Top" Margin="14 16" Orientation="Vertical">
                     <TextBlock Text="SwissKnife" FontSize="20" FontWeight="Bold" Foreground="{StaticResource TextPrimaryBrush}"/>
                     <TextBlock Text="Multi-tool dashboard" FontSize="12" Foreground="{StaticResource TextSecondaryBrush}"/>
                 </StackPanel>
+
                 <ItemsControl ItemsSource="{Binding Categories}" Margin="6 10" DockPanel.Dock="Top">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate DataType="{x:Type models:CategoryItem}">
@@ -307,7 +311,7 @@
             </DockPanel>
         </Border>
 
-        <!-- Main content -->
+        <!-- Main -->
         <Grid Grid.Row="0" Grid.Column="1" Margin="16 16 16 8">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -325,8 +329,12 @@
                             Style="{StaticResource FadeInContentControl}"/>
         </Grid>
 
-        <!-- Status bar -->
-        <Border Grid.Row="1" Grid.ColumnSpan="2" Background="#101010" BorderBrush="{StaticResource BorderBrushLight}" BorderThickness="1 1 0 0" Padding="10 6">
+        <!-- Status -->
+        <Border Grid.Row="1" Grid.ColumnSpan="2"
+                Background="#101010"
+                BorderBrush="{StaticResource BorderBrushLight}"
+                BorderThickness="1 1 0 0"
+                Padding="10 6">
             <TextBlock Text="{Binding StatusText}" Foreground="{StaticResource TextSecondaryBrush}" />
         </Border>
     </Grid>
