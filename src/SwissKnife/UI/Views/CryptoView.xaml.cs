@@ -3,16 +3,18 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Media;
-using Microsoft.Win32;
+using WpfUserControl = System.Windows.Controls.UserControl;
+using WpfOpenFileDialog = Microsoft.Win32.OpenFileDialog;
+using WpfClipboard = System.Windows.Clipboard;
+using WpfColor = System.Windows.Media.Color;
 using SwissKnife.Core;
 using SwissKnife.Tools;
 using SwissKnife.UI.ViewModels;
 
 namespace SwissKnife.UI.Views;
 
-public partial class CryptoView : UserControl
+public partial class CryptoView : WpfUserControl
 {
     private readonly HashTool _hashTool = new();
     private CancellationTokenSource? _cancellationTokenSource;
@@ -25,7 +27,7 @@ public partial class CryptoView : UserControl
 
     private void BrowseButton_Click(object sender, RoutedEventArgs e)
     {
-        var dialog = new OpenFileDialog
+        var dialog = new WpfOpenFileDialog
         {
             CheckFileExists = true,
             Multiselect = false,
@@ -121,14 +123,14 @@ public partial class CryptoView : UserControl
     {
         if (!string.IsNullOrWhiteSpace(HashOutputTextBox.Text))
         {
-            Clipboard.SetText(HashOutputTextBox.Text);
+            WpfClipboard.SetText(HashOutputTextBox.Text);
             SetStatus("Hash copiato negli appunti");
         }
     }
 
     private void VerifyBrowseButton_Click(object sender, RoutedEventArgs e)
     {
-        var dialog = new OpenFileDialog
+        var dialog = new WpfOpenFileDialog
         {
             CheckFileExists = true,
             Multiselect = false,
@@ -211,7 +213,7 @@ public partial class CryptoView : UserControl
                 bool isMatch = actualHash.Equals(expectedHash, StringComparison.OrdinalIgnoreCase);
 
                 ShowVerifyResult(isMatch, actualHash, expectedHash);
-                
+
                 if (isMatch)
                 {
                     AppendLog("? Hash verificato: CORRISPONDE");
@@ -302,16 +304,16 @@ public partial class CryptoView : UserControl
         if (isMatch)
         {
             VerifyResultTextBlock.Text = "? HASH CORRISPONDE";
-            VerifyResultTextBlock.Foreground = new SolidColorBrush(Color.FromRgb(76, 175, 80));
+            VerifyResultTextBlock.Foreground = new SolidColorBrush(WpfColor.FromRgb(76, 175, 80));
             VerifyDetailTextBlock.Text = $"Il file ha l'hash corretto: {actualHash}";
-            VerifyResultBorder.BorderBrush = new SolidColorBrush(Color.FromRgb(76, 175, 80));
+            VerifyResultBorder.BorderBrush = new SolidColorBrush(WpfColor.FromRgb(76, 175, 80));
         }
         else
         {
             VerifyResultTextBlock.Text = "? HASH NON CORRISPONDE";
-            VerifyResultTextBlock.Foreground = new SolidColorBrush(Color.FromRgb(244, 67, 54));
+            VerifyResultTextBlock.Foreground = new SolidColorBrush(WpfColor.FromRgb(244, 67, 54));
             VerifyDetailTextBlock.Text = $"Atteso: {expectedHash}\nCalcolato: {actualHash}";
-            VerifyResultBorder.BorderBrush = new SolidColorBrush(Color.FromRgb(244, 67, 54));
+            VerifyResultBorder.BorderBrush = new SolidColorBrush(WpfColor.FromRgb(244, 67, 54));
         }
     }
 

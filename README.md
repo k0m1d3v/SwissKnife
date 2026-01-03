@@ -52,8 +52,28 @@ SwissKnife/
   - Mostra entrambi gli hash per confronto
   - Utile per verificare download e integrità file
 
-### 📄 PDF (In sviluppo)
-Strumenti per manipolazione PDF
+### 📄 PDF (Manipolazione PDF)
+
+#### Merge PDF (Unisci PDF)
+- **Unione documenti**: Combina più file PDF in un unico documento
+  - Selezione multipla di file
+  - Riordino file con pulsanti Up/Down
+  - Rimozione file dalla lista
+  - Mantiene l'ordine selezionato
+  - Progress bar durante l'unione
+  - Cancellazione operazione
+  - Log operazioni dettagliato
+
+#### Split PDF (Dividi PDF)
+- **Divisione documenti**: Divide un PDF in più file
+  - **Modalità per pagine**: Dividi ogni N pagine
+    - Es: 1 pagina per file, 3 pagine per file, etc.
+  - **Modalità range personalizzati**: Specifica range di pagine
+    - Es: "1-3,5-7,10" crea 3 file (pagine 1-3, 5-7, pagina 10)
+  - Selezione cartella output
+  - Nomi file automatici con indicatore pagine
+  - Progress bar durante la divisione
+  - Cancellazione operazione
 
 ### 🔄 Convert (In sviluppo)
 Strumenti di conversione file
@@ -174,7 +194,9 @@ Fornisce al tool:
 - [x] Tool Hash SHA-256 (verifica)
 - [x] Scrolling UI responsivo
 - [x] Progress bar e cancellazione
-- [ ] Tool PDF (merge, split, compress)
+- [x] Tool PDF Merge (unisci PDF)
+- [x] Tool PDF Split (dividi PDF)
+- [ ] Tool PDF Compress (comprimi PDF)
 - [ ] Tool Convert (immagini, documenti)
 - [ ] Tool Utility (vari)
 - [ ] Impostazioni persistenti

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading;
 
 namespace SwissKnife.Core;
@@ -12,6 +13,16 @@ public sealed class ToolContext
     /// Optional input file path for file-based tools.
     /// </summary>
     public string? InputFilePath { get; init; }
+
+    /// <summary>
+    /// Optional output file path or directory for file-based tools.
+    /// </summary>
+    public string? OutputFilePath { get; init; }
+
+    /// <summary>
+    /// Optional parameters dictionary for tool-specific configuration.
+    /// </summary>
+    public Dictionary<string, object>? Parameters { get; init; }
 
     /// <summary>
     /// Reports progress updates to the caller.
