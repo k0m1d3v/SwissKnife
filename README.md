@@ -16,4 +16,6 @@ MVP di una toolbox WPF modulare (.NET 8) pensata per essere portabile e facilmen
 1. Ripristina e compila: `dotnet restore` quindi `dotnet build`.
 2. Avvia: `dotnet run --project src/SwissKnife/SwissKnife.csproj`.
 
-L'app consente di selezionare un file, calcolare l'hash SHA-256 in streaming e copiare il risultato.
+## UI
+- Tema scuro con accent viola, sidebar sinistra (Crypto, PDF, Convert, Utility, Settings) e area principale a card.
+- La sezione **Crypto** contiene il tool “Hash SHA-256” con selezione file, progress bar, log e copia risultato.
