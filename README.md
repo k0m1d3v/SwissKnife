@@ -216,7 +216,7 @@ Fornisce al tool:
 - [ ] Tool Convert (immagini, documenti)
 - [ ] Tool Utility (vari)
 - [ ] Impostazioni persistenti
-- [ ] Supporto temi multipli
+- [x] Supporto temi multipli
 - [ ] Export/Import configurazioni
 - [ ] PDF: Estrazione testo/immagini
 - [ ] PDF: Protezione con password
