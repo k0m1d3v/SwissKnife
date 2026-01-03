@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using Microsoft.Win32;
 using SwissKnife.Core;
 using SwissKnife.Tools;
@@ -15,6 +16,7 @@ public partial class CryptoView : UserControl
 {
     private readonly HashTool _hashTool = new();
     private CancellationTokenSource? _cancellationTokenSource;
+    private CancellationTokenSource? _verifyCancellationTokenSource;
 
     public CryptoView()
     {
@@ -124,12 +126,142 @@ public partial class CryptoView : UserControl
         }
     }
 
+    private void VerifyBrowseButton_Click(object sender, RoutedEventArgs e)
+    {
+        var dialog = new OpenFileDialog
+        {
+            CheckFileExists = true,
+            Multiselect = false,
+            Title = "Seleziona un file da verificare",
+        };
+
+        if (dialog.ShowDialog(GetParentWindow()) == true)
+        {
+            VerifyFilePathTextBox.Text = dialog.FileName;
+            AppendLog($"File da verificare: {dialog.FileName}");
+            SetStatus("File selezionato per verifica");
+        }
+    }
+
+    private async void VerifyButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (_verifyCancellationTokenSource != null)
+        {
+            return;
+        }
+
+        string filePath = VerifyFilePathTextBox.Text.Trim();
+        string expectedHash = ExpectedHashTextBox.Text.Trim().ToUpperInvariant();
+
+        if (string.IsNullOrWhiteSpace(filePath))
+        {
+            AppendLog("Errore: Seleziona un file da verificare");
+            SetStatus("File non selezionato");
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(expectedHash))
+        {
+            AppendLog("Errore: Inserisci l'hash da verificare");
+            SetStatus("Hash non inserito");
+            return;
+        }
+
+        ClearVerifyResult();
+        SetStatus("Verifica in corso...");
+        SetVerifyRunningState(true, isIndeterminate: true);
+
+        _verifyCancellationTokenSource = new CancellationTokenSource();
+
+        var progress = new Progress<ToolProgress>(p =>
+        {
+            if (p.Percentage.HasValue)
+            {
+                VerifyProgressBar.IsIndeterminate = false;
+                VerifyProgressBar.Value = p.Percentage.Value;
+                VerifyProgressBar.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                VerifyProgressBar.IsIndeterminate = true;
+                VerifyProgressBar.Visibility = Visibility.Visible;
+            }
+
+            if (!string.IsNullOrWhiteSpace(p.Message))
+            {
+                SetStatus(p.Message);
+            }
+        });
+
+        var context = new ToolContext
+        {
+            InputFilePath = filePath,
+            CancellationToken = _verifyCancellationTokenSource.Token,
+            Logger = AppendLog,
+            Progress = progress,
+        };
+
+        try
+        {
+            var result = await _hashTool.RunAsync(context);
+
+            if (result.IsSuccess && !string.IsNullOrWhiteSpace(result.Output))
+            {
+                string actualHash = result.Output.ToUpperInvariant();
+                bool isMatch = actualHash.Equals(expectedHash, StringComparison.OrdinalIgnoreCase);
+
+                ShowVerifyResult(isMatch, actualHash, expectedHash);
+                
+                if (isMatch)
+                {
+                    AppendLog("? Hash verificato: CORRISPONDE");
+                    SetStatus("Hash verificato: CORRISPONDE");
+                }
+                else
+                {
+                    AppendLog("? Hash verificato: NON CORRISPONDE");
+                    SetStatus("Hash verificato: NON CORRISPONDE");
+                }
+            }
+            else
+            {
+                AppendLog(result.Error ?? "Errore durante il calcolo dell'hash");
+                SetStatus("Verifica fallita");
+            }
+        }
+        catch (OperationCanceledException)
+        {
+            AppendLog("Verifica annullata dall'utente.");
+            SetStatus("Verifica annullata");
+        }
+        finally
+        {
+            VerifyProgressBar.Visibility = Visibility.Collapsed;
+            SetVerifyRunningState(false, isIndeterminate: false);
+            _verifyCancellationTokenSource?.Dispose();
+            _verifyCancellationTokenSource = null;
+        }
+    }
+
+    private void VerifyCancelButton_Click(object sender, RoutedEventArgs e)
+    {
+        _verifyCancellationTokenSource?.Cancel();
+    }
+
     private void SetRunningState(bool isRunning, bool isIndeterminate)
     {
         CalculateButton.IsEnabled = !isRunning;
         CancelButton.IsEnabled = isRunning;
         OperationProgressBar.IsIndeterminate = isIndeterminate;
         OperationProgressBar.Visibility = isRunning ? Visibility.Visible : Visibility.Collapsed;
+    }
+
+    private void SetVerifyRunningState(bool isRunning, bool isIndeterminate)
+    {
+        VerifyButton.IsEnabled = !isRunning;
+        VerifyCancelButton.IsEnabled = isRunning;
+        VerifyProgressBar.IsIndeterminate = isIndeterminate;
+        VerifyProgressBar.Visibility = isRunning ? Visibility.Visible : Visibility.Collapsed;
     }
 
     private void AppendLog(string message)
@@ -156,6 +288,31 @@ public partial class CryptoView : UserControl
     {
         HashOutputTextBox.Clear();
         CopyButton.IsEnabled = false;
+    }
+
+    private void ClearVerifyResult()
+    {
+        VerifyResultBorder.Visibility = Visibility.Collapsed;
+    }
+
+    private void ShowVerifyResult(bool isMatch, string actualHash, string expectedHash)
+    {
+        VerifyResultBorder.Visibility = Visibility.Visible;
+
+        if (isMatch)
+        {
+            VerifyResultTextBlock.Text = "? HASH CORRISPONDE";
+            VerifyResultTextBlock.Foreground = new SolidColorBrush(Color.FromRgb(76, 175, 80));
+            VerifyDetailTextBlock.Text = $"Il file ha l'hash corretto: {actualHash}";
+            VerifyResultBorder.BorderBrush = new SolidColorBrush(Color.FromRgb(76, 175, 80));
+        }
+        else
+        {
+            VerifyResultTextBlock.Text = "? HASH NON CORRISPONDE";
+            VerifyResultTextBlock.Foreground = new SolidColorBrush(Color.FromRgb(244, 67, 54));
+            VerifyDetailTextBlock.Text = $"Atteso: {expectedHash}\nCalcolato: {actualHash}";
+            VerifyResultBorder.BorderBrush = new SolidColorBrush(Color.FromRgb(244, 67, 54));
+        }
     }
 
     private Window? GetParentWindow() => Window.GetWindow(this);

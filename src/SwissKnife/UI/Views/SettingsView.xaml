@@ -6,9 +6,9 @@
              mc:Ignorable="d"
              d:DesignHeight="520" d:DesignWidth="760">
     <Border Style="{StaticResource CardStyle}">
-        <StackPanel Spacing="8">
+        <StackPanel>
             <TextBlock Text="Settings" FontSize="18" FontWeight="SemiBold" Foreground="{StaticResource TextPrimaryBrush}" />
-            <TextBlock Text="Coming soon: personalizzazione tema e preferenze." Foreground="{StaticResource TextSecondaryBrush}" />
+            <TextBlock Text="Coming soon: personalizzazione tema e preferenze." Foreground="{StaticResource TextSecondaryBrush}" Margin="0 8 0 0" />
         </StackPanel>
     </Border>
 </UserControl>
