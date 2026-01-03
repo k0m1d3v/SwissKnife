@@ -268,6 +268,12 @@ public partial class CryptoView : WpfUserControl
 
     private void AppendLog(string message)
     {
+        if (!Dispatcher.CheckAccess())
+        {
+            Dispatcher.Invoke(() => AppendLog(message));
+            return;
+        }
+
         var builder = new StringBuilder();
         builder.Append('[')
                .Append(DateTime.Now.ToString("HH:mm:ss"))

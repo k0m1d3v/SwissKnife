@@ -6,9 +6,129 @@
              mc:Ignorable="d"
              d:DesignHeight="520" d:DesignWidth="760">
     <Border Style="{StaticResource CardStyle}">
-        <StackPanel>
-            <TextBlock Text="Settings" FontSize="18" FontWeight="SemiBold" Foreground="{StaticResource TextPrimaryBrush}" />
-            <TextBlock Text="Coming soon: personalizzazione tema e preferenze." Foreground="{StaticResource TextSecondaryBrush}" Margin="0 8 0 0" />
-        </StackPanel>
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <!-- Header -->
+                <TextBlock Text="Impostazioni" 
+                           FontSize="18" 
+                           FontWeight="SemiBold" 
+                           Foreground="{DynamicResource TextPrimaryBrush}" />
+                <TextBlock Text="Personalizza l'aspetto e il comportamento dell'applicazione" 
+                           Foreground="{DynamicResource TextSecondaryBrush}" 
+                           Margin="0 4 0 0" />
+
+                <Separator Margin="0 16" Background="{DynamicResource BorderBrushLight}" />
+
+                <!-- Appearance Section -->
+                <TextBlock Text="Aspetto" 
+                           FontSize="15" 
+                           FontWeight="SemiBold" 
+                           Foreground="{DynamicResource TextPrimaryBrush}" 
+                           Margin="0 0 0 12" />
+
+                <!-- Theme Selection -->
+                <StackPanel Orientation="Vertical" Margin="0 0 0 20">
+                    <TextBlock Text="Tema" 
+                               FontWeight="Medium" 
+                               Foreground="{DynamicResource TextPrimaryBrush}" 
+                               Margin="0 0 0 8" />
+                    <TextBlock Text="Scegli il tema dell'applicazione" 
+                               FontSize="12" 
+                               Foreground="{DynamicResource TextSecondaryBrush}" 
+                               Margin="0 0 0 10" />
+
+                    <StackPanel Orientation="Horizontal">
+                        <!-- Dark Theme Button -->
+                        <Border x:Name="DarkThemeCard"
+                                Width="180" 
+                                Height="100"
+                                Background="#1E1E1E"
+                                BorderBrush="{DynamicResource AccentBrush}"
+                                BorderThickness="2"
+                                CornerRadius="10"
+                                Padding="12"
+                                Cursor="Hand"
+                                Margin="0 0 12 0"
+                                MouseLeftButtonDown="DarkThemeCard_Click">
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock Text="?? Scuro" 
+                                           FontSize="16" 
+                                           FontWeight="SemiBold" 
+                                           Foreground="#F5F5F5" 
+                                           HorizontalAlignment="Center" />
+                                <TextBlock Text="Tema predefinito" 
+                                           FontSize="11" 
+                                           Foreground="#B3B3B3" 
+                                           HorizontalAlignment="Center" 
+                                           Margin="0 4 0 0" />
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Light Theme Button -->
+                        <Border x:Name="LightThemeCard"
+                                Width="180" 
+                                Height="100"
+                                Background="#FFFFFF"
+                                BorderBrush="{DynamicResource BorderBrushLight}"
+                                BorderThickness="2"
+                                CornerRadius="10"
+                                Padding="12"
+                                Cursor="Hand"
+                                MouseLeftButtonDown="LightThemeCard_Click">
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock Text="?? Chiaro" 
+                                           FontSize="16" 
+                                           FontWeight="SemiBold" 
+                                           Foreground="#212121" 
+                                           HorizontalAlignment="Center" />
+                                <TextBlock Text="Perfetto per il giorno" 
+                                           FontSize="11" 
+                                           Foreground="#757575" 
+                                           HorizontalAlignment="Center" 
+                                           Margin="0 4 0 0" />
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </StackPanel>
+
+                <Separator Margin="0 8 0 16" Background="{DynamicResource BorderBrushLight}" />
+
+                <!-- Info Section -->
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Text="Informazioni" 
+                               FontSize="15" 
+                               FontWeight="SemiBold" 
+                               Foreground="{DynamicResource TextPrimaryBrush}" 
+                               Margin="0 0 0 12" />
+                    
+                    <StackPanel Orientation="Vertical">
+                        <StackPanel Orientation="Horizontal" Margin="0 0 0 6">
+                            <TextBlock Text="Versione:" 
+                                       FontWeight="Medium" 
+                                       Foreground="{DynamicResource TextPrimaryBrush}" 
+                                       Width="100" />
+                            <TextBlock Text="1.0.0" 
+                                       Foreground="{DynamicResource TextSecondaryBrush}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0 0 0 6">
+                            <TextBlock Text="Autore:" 
+                                       FontWeight="Medium" 
+                                       Foreground="{DynamicResource TextPrimaryBrush}" 
+                                       Width="100" />
+                            <TextBlock Text="k0m1d3v" 
+                                       Foreground="{DynamicResource TextSecondaryBrush}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Framework:" 
+                                       FontWeight="Medium" 
+                                       Foreground="{DynamicResource TextPrimaryBrush}" 
+                                       Width="100" />
+                            <TextBlock Text=".NET 8 WPF" 
+                                       Foreground="{DynamicResource TextSecondaryBrush}" />
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
     </Border>
 </UserControl>

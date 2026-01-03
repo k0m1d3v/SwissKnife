@@ -7,8 +7,8 @@
              d:DesignHeight="520" d:DesignWidth="760">
     <Border Style="{StaticResource CardStyle}">
         <StackPanel>
-            <TextBlock Text="Convert" FontSize="18" FontWeight="SemiBold" Foreground="{StaticResource TextPrimaryBrush}" />
-            <TextBlock Text="Coming soon: strumenti di conversione file." Foreground="{StaticResource TextSecondaryBrush}" Margin="0 8 0 0" />
+            <TextBlock Text="Convert" FontSize="18" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimaryBrush}" />
+            <TextBlock Text="Coming soon: strumenti di conversione file." Foreground="{DynamicResource TextSecondaryBrush}" Margin="0 8 0 0" />
         </StackPanel>
     </Border>
 </UserControl>

@@ -11,7 +11,7 @@
         Width="1000"
         MinHeight="520"
         MinWidth="880"
-        Background="#121212"
+        Background="{DynamicResource WindowBackgroundBrush}"
         FontFamily="Segoe UI"
         WindowStartupLocation="CenterScreen">
 
@@ -19,7 +19,7 @@
         <vm:MainViewModel />
     </Window.DataContext>
 
-    <Grid Background="{StaticResource BgPrimaryBrush}">
+    <Grid Background="{DynamicResource BgPrimaryBrush}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="220"/>
             <ColumnDefinition Width="*"/>
@@ -31,13 +31,13 @@
 
         <!-- Sidebar -->
         <Border Grid.Row="0" Grid.Column="0"
-                Background="#141414"
-                BorderBrush="{StaticResource BorderBrushLight}"
+                Background="{DynamicResource SidebarBackgroundBrush}"
+                BorderBrush="{DynamicResource BorderBrushLight}"
                 BorderThickness="0 0 1 0">
             <DockPanel>
                 <StackPanel DockPanel.Dock="Top" Margin="14 16" Orientation="Vertical">
-                    <TextBlock Text="SwissKnife" FontSize="20" FontWeight="Bold" Foreground="{StaticResource TextPrimaryBrush}"/>
-                    <TextBlock Text="Multi-tool dashboard" FontSize="12" Foreground="{StaticResource TextSecondaryBrush}"/>
+                    <TextBlock Text="SwissKnife" FontSize="20" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                    <TextBlock Text="Multi-tool dashboard" FontSize="12" Foreground="{DynamicResource TextSecondaryBrush}"/>
                 </StackPanel>
 
                 <ItemsControl ItemsSource="{Binding Categories}" Margin="6 10" DockPanel.Dock="Top">
@@ -60,8 +60,8 @@
             </Grid.RowDefinitions>
 
             <StackPanel Orientation="Vertical" Margin="0 0 0 14">
-                <TextBlock Text="{Binding SelectedCategoryDisplayName}" FontSize="22" FontWeight="SemiBold" Foreground="{StaticResource TextPrimaryBrush}" />
-                <TextBlock Text="{Binding SelectedCategorySubtitle}" FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" />
+                <TextBlock Text="{Binding SelectedCategoryDisplayName}" FontSize="22" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimaryBrush}" />
+                <TextBlock Text="{Binding SelectedCategorySubtitle}" FontSize="12" Foreground="{DynamicResource TextSecondaryBrush}" />
             </StackPanel>
 
             <ContentControl Grid.Row="1"
@@ -72,11 +72,11 @@
 
         <!-- Status -->
         <Border Grid.Row="1" Grid.ColumnSpan="2"
-                Background="#101010"
-                BorderBrush="{StaticResource BorderBrushLight}"
+                Background="{DynamicResource StatusBarBackgroundBrush}"
+                BorderBrush="{DynamicResource BorderBrushLight}"
                 BorderThickness="1 1 0 0"
                 Padding="10 6">
-            <TextBlock Text="{Binding StatusText}" Foreground="{StaticResource TextSecondaryBrush}" />
+            <TextBlock Text="{Binding StatusText}" Foreground="{DynamicResource TextSecondaryBrush}" />
         </Border>
     </Grid>
 </Window>

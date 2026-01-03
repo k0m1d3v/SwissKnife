@@ -19,15 +19,15 @@
             <Border Style="{StaticResource CardStyle}">
                 <StackPanel>
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                        <TextBlock Text="Hash SHA-256" FontSize="18" FontWeight="SemiBold" Foreground="{StaticResource TextPrimaryBrush}"/>
-                        <Border Background="{StaticResource AccentBrush}" CornerRadius="8" Padding="8 4" Margin="10 0 0 0">
+                        <TextBlock Text="Hash SHA-256" FontSize="18" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                        <Border Background="{DynamicResource AccentBrush}" CornerRadius="8" Padding="8 4" Margin="10 0 0 0">
                             <TextBlock Text="Crypto" FontWeight="Bold" Foreground="White" FontSize="12"/>
                         </Border>
                     </StackPanel>
-                    <TextBlock Text="Calcola l'hash SHA-256 di un file usando streaming e progressione." Foreground="{StaticResource TextSecondaryBrush}" Margin="0 12 0 0" />
+                    <TextBlock Text="Calcola l'hash SHA-256 di un file usando streaming e progressione." Foreground="{DynamicResource TextSecondaryBrush}" Margin="0 12 0 0" />
 
                     <StackPanel Margin="0 12 0 0">
-                        <TextBlock Text="File da elaborare" Foreground="{StaticResource TextSecondaryBrush}" FontSize="12" Margin="0 0 0 4"/>
+                        <TextBlock Text="File da elaborare" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12" Margin="0 0 0 4"/>
                         <Grid Margin="0 0 0 10">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
@@ -43,18 +43,18 @@
                         </StackPanel>
 
                         <StackPanel Margin="0 0 0 10">
-                            <TextBlock Text="Avanzamento" Foreground="{StaticResource TextSecondaryBrush}" FontSize="12"/>
+                            <TextBlock Text="Avanzamento" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12"/>
                             <ProgressBar x:Name="OperationProgressBar" Minimum="0" Maximum="100" Visibility="Collapsed" Margin="0 6 0 0"/>
                         </StackPanel>
 
-                        <Border Background="#191919" BorderBrush="{StaticResource BorderBrushLight}" BorderThickness="1" CornerRadius="10" Padding="12">
+                        <Border Background="{DynamicResource ResultBackgroundBrush}" BorderBrush="{DynamicResource BorderBrushLight}" BorderThickness="1" CornerRadius="10" Padding="12">
                             <Grid VerticalAlignment="Center">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
                                 <StackPanel>
-                                    <TextBlock Text="Risultato" Foreground="{StaticResource TextSecondaryBrush}" FontSize="12"/>
+                                    <TextBlock Text="Risultato" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12"/>
                                     <TextBox x:Name="HashOutputTextBox" IsReadOnly="True" VerticalContentAlignment="Center" Margin="0 4 0 0"/>
                                 </StackPanel>
                                 <Button Grid.Column="1" x:Name="CopyButton" Content="Copia" Style="{StaticResource GhostButtonStyle}" Width="90" Click="CopyButton_Click" IsEnabled="False" Margin="10 0 0 0"/>
@@ -68,15 +68,15 @@
             <Border Grid.Row="1" Style="{StaticResource CardStyle}" Margin="0 12 0 0">
                 <StackPanel>
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                        <TextBlock Text="Verifica Hash SHA-256" FontSize="18" FontWeight="SemiBold" Foreground="{StaticResource TextPrimaryBrush}"/>
-                        <Border Background="#4CAF50" CornerRadius="8" Padding="8 4" Margin="10 0 0 0">
+                        <TextBlock Text="Verifica Hash SHA-256" FontSize="18" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                        <Border Background="{DynamicResource SuccessBadgeBrush}" CornerRadius="8" Padding="8 4" Margin="10 0 0 0">
                             <TextBlock Text="Verifica" FontWeight="Bold" Foreground="White" FontSize="12"/>
                         </Border>
                     </StackPanel>
-                    <TextBlock Text="Verifica se un hash SHA-256 corrisponde a un file." Foreground="{StaticResource TextSecondaryBrush}" Margin="0 12 0 0" />
+                    <TextBlock Text="Verifica se un hash SHA-256 corrisponde a un file." Foreground="{DynamicResource TextSecondaryBrush}" Margin="0 12 0 0" />
 
                     <StackPanel Margin="0 12 0 0">
-                        <TextBlock Text="File da verificare" Foreground="{StaticResource TextSecondaryBrush}" FontSize="12" Margin="0 0 0 4"/>
+                        <TextBlock Text="File da verificare" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12" Margin="0 0 0 4"/>
                         <Grid Margin="0 0 0 10">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
@@ -86,7 +86,7 @@
                             <Button Grid.Column="1" Content="Sfoglia" Style="{StaticResource GhostButtonStyle}" Click="VerifyBrowseButton_Click" Margin="10 0 0 0" />
                         </Grid>
 
-                        <TextBlock Text="Hash SHA-256 atteso" Foreground="{StaticResource TextSecondaryBrush}" FontSize="12" Margin="0 0 0 4"/>
+                        <TextBlock Text="Hash SHA-256 atteso" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12" Margin="0 0 0 4"/>
                         <Grid Margin="0 0 0 10">
                             <TextBox x:Name="ExpectedHashTextBox" VerticalContentAlignment="Center"/>
                         </Grid>
@@ -97,14 +97,14 @@
                         </StackPanel>
 
                         <StackPanel Margin="0 0 0 10">
-                            <TextBlock Text="Avanzamento" Foreground="{StaticResource TextSecondaryBrush}" FontSize="12"/>
+                            <TextBlock Text="Avanzamento" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12"/>
                             <ProgressBar x:Name="VerifyProgressBar" Minimum="0" Maximum="100" Visibility="Collapsed" Margin="0 6 0 0"/>
                         </StackPanel>
 
-                        <Border x:Name="VerifyResultBorder" Background="#191919" BorderBrush="{StaticResource BorderBrushLight}" BorderThickness="1" CornerRadius="10" Padding="12" Visibility="Collapsed">
+                        <Border x:Name="VerifyResultBorder" Background="{DynamicResource ResultBackgroundBrush}" BorderBrush="{DynamicResource BorderBrushLight}" BorderThickness="1" CornerRadius="10" Padding="12" Visibility="Collapsed">
                             <StackPanel>
                                 <TextBlock x:Name="VerifyResultTextBlock" FontSize="14" FontWeight="SemiBold"/>
-                                <TextBlock x:Name="VerifyDetailTextBlock" Foreground="{StaticResource TextSecondaryBrush}" FontSize="12" Margin="0 4 0 0" TextWrapping="Wrap"/>
+                                <TextBlock x:Name="VerifyDetailTextBlock" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12" Margin="0 4 0 0" TextWrapping="Wrap"/>
                             </StackPanel>
                         </Border>
                     </StackPanel>
@@ -115,8 +115,8 @@
             <Border Grid.Row="2" Style="{StaticResource CardStyle}" Margin="0 12 0 0" Padding="14">
                 <StackPanel>
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                        <TextBlock Text="Log" FontSize="14" FontWeight="SemiBold" Foreground="{StaticResource TextPrimaryBrush}"/>
-                        <TextBlock Text="(ultimi messaggi)" Foreground="{StaticResource TextSecondaryBrush}" FontSize="12" Margin="8 0 0 0"/>
+                        <TextBlock Text="Log" FontSize="14" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                        <TextBlock Text="(ultimi messaggi)" Foreground="{DynamicResource TextSecondaryBrush}" FontSize="12" Margin="8 0 0 0"/>
                     </StackPanel>
                     <TextBox x:Name="LogTextBox"
                              Height="120"
