@@ -13,38 +13,38 @@
         </Grid.RowDefinitions>
 
         <Border Style="{StaticResource CardStyle}">
-            <StackPanel>
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                    <TextBlock Text="Hash SHA-256" FontSize="18" FontWeight="SemiBold" Foreground="{StaticResource TextPrimaryBrush}" Margin="0 0 10 0"/>
+            <StackPanel Spacing="12">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Spacing="10">
+                    <TextBlock Text="Hash SHA-256" FontSize="18" FontWeight="SemiBold" Foreground="{StaticResource TextPrimaryBrush}"/>
                     <Border Background="{StaticResource AccentBrush}" CornerRadius="8" Padding="8 4">
                         <TextBlock Text="Crypto" FontWeight="Bold" Foreground="White" FontSize="12"/>
                     </Border>
                 </StackPanel>
-                <TextBlock Text="Calcola l'hash SHA-256 di un file usando streaming e progressione." Foreground="{StaticResource TextSecondaryBrush}" Margin="0 8 0 12"/>
+                <TextBlock Text="Calcola l'hash SHA-256 di un file usando streaming e progressione." Foreground="{StaticResource TextSecondaryBrush}" />
 
-                <StackPanel>
-                    <Grid ColumnDefinitions="*,Auto">
-                        <TextBox x:Name="FilePathTextBox" MinWidth="400" VerticalContentAlignment="Center" />
-                        <Button Grid.Column="1" Content="Sfoglia" Style="{StaticResource GhostButtonStyle}" Click="BrowseButton_Click" Margin="10 0 0 0"/>
+                <StackPanel Spacing="10">
+                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                        <TextBox x:Name="FilePathTextBox" MinWidth="400" VerticalContentAlignment="Center"/>
+                        <Button Grid.Column="1" Content="Sfoglia" Style="{StaticResource GhostButtonStyle}" Click="BrowseButton_Click" />
                     </Grid>
 
-                    <StackPanel Orientation="Horizontal" Margin="0 10 0 0">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
                         <Button x:Name="CalculateButton" Content="Calcola SHA-256" Style="{StaticResource PrimaryButtonStyle}" Click="CalculateButton_Click" Width="160"/>
-                        <Button x:Name="CancelButton" Content="Annulla" Style="{StaticResource GhostButtonStyle}" Click="CancelButton_Click" Width="100" IsEnabled="False" Margin="8 0 0 0"/>
+                        <Button x:Name="CancelButton" Content="Annulla" Style="{StaticResource GhostButtonStyle}" Click="CancelButton_Click" Width="100" IsEnabled="False"/>
                     </StackPanel>
 
-                    <StackPanel Margin="0 10 0 0">
+                    <StackPanel Spacing="6">
                         <TextBlock Text="Avanzamento" Foreground="{StaticResource TextSecondaryBrush}" FontSize="12"/>
-                        <ProgressBar x:Name="OperationProgressBar" Minimum="0" Maximum="100" Visibility="Collapsed" Margin="0 4 0 0"/>
+                        <ProgressBar x:Name="OperationProgressBar" Minimum="0" Maximum="100" Visibility="Collapsed"/>
                     </StackPanel>
 
-                    <Border Background="#191919" BorderBrush="{StaticResource BorderBrushLight}" BorderThickness="1" CornerRadius="10" Padding="12" Margin="0 10 0 0">
-                        <Grid ColumnDefinitions="*,Auto" VerticalAlignment="Center">
+                    <Border Background="#191919" BorderBrush="{StaticResource BorderBrushLight}" BorderThickness="1" CornerRadius="10" Padding="12">
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10" VerticalAlignment="Center">
                             <StackPanel>
                                 <TextBlock Text="Risultato" Foreground="{StaticResource TextSecondaryBrush}" FontSize="12"/>
                                 <TextBox x:Name="HashOutputTextBox" IsReadOnly="True" VerticalContentAlignment="Center" Margin="0 4 0 0"/>
                             </StackPanel>
-                            <Button x:Name="CopyButton" Content="Copia" Style="{StaticResource GhostButtonStyle}" Width="90" Click="CopyButton_Click" IsEnabled="False" Margin="10 0 0 0"/>
+                            <Button x:Name="CopyButton" Content="Copia" Style="{StaticResource GhostButtonStyle}" Width="90" Click="CopyButton_Click" IsEnabled="False"/>
                         </Grid>
                     </Border>
                 </StackPanel>
@@ -52,9 +52,9 @@
         </Border>
 
         <Border Grid.Row="1" Style="{StaticResource CardStyle}" Margin="0 12 0 0" Padding="14">
-            <StackPanel>
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                    <TextBlock Text="Log" FontSize="14" FontWeight="SemiBold" Foreground="{StaticResource TextPrimaryBrush}" Margin="0 0 8 0"/>
+            <StackPanel Spacing="6">
+                <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                    <TextBlock Text="Log" FontSize="14" FontWeight="SemiBold" Foreground="{StaticResource TextPrimaryBrush}"/>
                     <TextBlock Text="(ultimi messaggi)" Foreground="{StaticResource TextSecondaryBrush}" FontSize="12"/>
                 </StackPanel>
                 <TextBox x:Name="LogTextBox"
@@ -62,8 +62,7 @@
                          AcceptsReturn="True"
                          VerticalScrollBarVisibility="Auto"
                          IsReadOnly="True"
-                         TextWrapping="Wrap"
-                         Margin="0 6 0 0"/>
+                         TextWrapping="Wrap"/>
             </StackPanel>
         </Border>
     </Grid>
