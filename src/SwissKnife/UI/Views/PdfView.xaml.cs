@@ -17,8 +17,10 @@ public partial class PdfView : WpfUserControl
 {
     private readonly PdfMergeTool _mergeTool = new();
     private readonly PdfSplitTool _splitTool = new();
+    private readonly PdfCompressTool _compressTool = new();
     private System.Threading.CancellationTokenSource? _mergeCancellationTokenSource;
     private System.Threading.CancellationTokenSource? _splitCancellationTokenSource;
+    private System.Threading.CancellationTokenSource? _compressCancellationTokenSource;
     private readonly List<string> _mergeFiles = new();
 
     public PdfView()
@@ -323,6 +325,172 @@ public partial class PdfView : WpfUserControl
         _splitCancellationTokenSource?.Cancel();
     }
 
+    // ===== COMPRESS METHODS =====
+
+    private void BrowseCompressFileButton_Click(object sender, RoutedEventArgs e)
+    {
+        var dialog = new WpfOpenFileDialog
+        {
+            CheckFileExists = true,
+            Multiselect = false,
+            Title = "Seleziona PDF da comprimere",
+            Filter = "PDF Files (*.pdf)|*.pdf"
+        };
+
+        if (dialog.ShowDialog(GetParentWindow()) == true)
+        {
+            CompressFilePathTextBox.Text = dialog.FileName;
+            AppendLog($"File selezionato: {dialog.FileName}");
+            SetStatus("File PDF selezionato per compressione");
+        }
+    }
+
+    private async void CompressPdfButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (_compressCancellationTokenSource != null)
+        {
+            return;
+        }
+
+        string inputFile = CompressFilePathTextBox.Text.Trim();
+
+        if (string.IsNullOrWhiteSpace(inputFile))
+        {
+            AppendLog("Errore: Seleziona un file PDF");
+            SetStatus("File non selezionato");
+            return;
+        }
+
+        var saveDialog = new WpfSaveFileDialog
+        {
+            Filter = "PDF Files (*.pdf)|*.pdf",
+            Title = "Salva PDF compresso",
+            FileName = Path.GetFileNameWithoutExtension(inputFile) + "_compressed.pdf",
+            InitialDirectory = Path.GetDirectoryName(inputFile)
+        };
+
+        if (saveDialog.ShowDialog(GetParentWindow()) != true)
+        {
+            return;
+        }
+
+        CompressResultBorder.Visibility = Visibility.Collapsed;
+        SetStatus("Compressione in corso...");
+        SetCompressRunningState(true);
+
+        _compressCancellationTokenSource = new System.Threading.CancellationTokenSource();
+
+        var progress = new Progress<ToolProgress>(p =>
+        {
+            if (p.Percentage.HasValue)
+            {
+                CompressProgressBar.IsIndeterminate = false;
+                CompressProgressBar.Value = p.Percentage.Value;
+                CompressProgressBar.Visibility = Visibility.Visible;
+            }
+
+            if (!string.IsNullOrWhiteSpace(p.Message))
+            {
+                SetStatus(p.Message);
+            }
+        });
+
+        // Get compression level
+        string compressionLevel = "Medium";
+        if (CompressLowRadio.IsChecked == true) compressionLevel = "Low";
+        else if (CompressHighRadio.IsChecked == true) compressionLevel = "High";
+
+        var parameters = new Dictionary<string, object>
+        {
+            ["compressionLevel"] = compressionLevel
+        };
+
+        var context = new ToolContext
+        {
+            InputFilePath = inputFile,
+            OutputFilePath = saveDialog.FileName,
+            CancellationToken = _compressCancellationTokenSource.Token,
+            Logger = AppendLog,
+            Progress = progress,
+            Parameters = parameters
+        };
+
+        try
+        {
+            var result = await _compressTool.RunAsync(context);
+
+            if (result.IsSuccess)
+            {
+                AppendLog($"? Compressione completata: {Path.GetFileName(saveDialog.FileName)}");
+                SetStatus("Compressione completata con successo");
+                ShowCompressResult(inputFile, saveDialog.FileName);
+            }
+            else
+            {
+                AppendLog($"? Errore compressione: {result.Error}");
+                SetStatus("Compressione fallita");
+            }
+        }
+        catch (OperationCanceledException)
+        {
+            AppendLog("Compressione annullata dall'utente");
+            SetStatus("Compressione annullata");
+        }
+        finally
+        {
+            CompressProgressBar.Visibility = Visibility.Collapsed;
+            SetCompressRunningState(false);
+            _compressCancellationTokenSource?.Dispose();
+            _compressCancellationTokenSource = null;
+        }
+    }
+
+    private void CompressCancelButton_Click(object sender, RoutedEventArgs e)
+    {
+        _compressCancellationTokenSource?.Cancel();
+    }
+
+    private void ShowCompressResult(string originalPath, string compressedPath)
+    {
+        var originalInfo = new FileInfo(originalPath);
+        var compressedInfo = new FileInfo(compressedPath);
+
+        long originalSize = originalInfo.Length;
+        long compressedSize = compressedInfo.Length;
+        double reductionPercent = ((double)(originalSize - compressedSize) / originalSize) * 100.0;
+
+        CompressResultBorder.Visibility = Visibility.Visible;
+
+        if (compressedSize < originalSize)
+        {
+            CompressResultTextBlock.Text = $"? Compressione riuscita: {reductionPercent:F1}% ridotto";
+            CompressDetailTextBlock.Text = $"Originale: {FormatFileSize(originalSize)}\n" +
+                                          $"Compresso: {FormatFileSize(compressedSize)}\n" +
+                                          $"Risparmiati: {FormatFileSize(originalSize - compressedSize)}";
+        }
+        else
+        {
+            CompressResultTextBlock.Text = "! Nessuna riduzione";
+            CompressDetailTextBlock.Text = $"Il file compresso ({FormatFileSize(compressedSize)}) non e piu piccolo dell'originale ({FormatFileSize(originalSize)}).\n" +
+                                          "Il PDF potrebbe essere gia ottimizzato.";
+        }
+    }
+
+    private string FormatFileSize(long bytes)
+    {
+        string[] sizes = { "B", "KB", "MB", "GB" };
+        double len = bytes;
+        int order = 0;
+
+        while (len >= 1024 && order < sizes.Length - 1)
+        {
+            order++;
+            len /= 1024;
+        }
+
+        return $"{len:0.##} {sizes[order]}";
+    }
+
     // ===== HELPER METHODS =====
 
     private void UpdateMergeFilesList()
@@ -351,8 +519,26 @@ public partial class PdfView : WpfUserControl
         SplitProgressBar.Visibility = isRunning ? Visibility.Visible : Visibility.Collapsed;
     }
 
+    private void SetCompressRunningState(bool isRunning)
+    {
+        BrowseCompressFileButton.IsEnabled = !isRunning;
+        CompressPdfButton.IsEnabled = !isRunning;
+        CompressCancelButton.IsEnabled = isRunning;
+        CompressProgressBar.IsIndeterminate = true;
+        CompressProgressBar.Visibility = isRunning ? Visibility.Visible : Visibility.Collapsed;
+        CompressLowRadio.IsEnabled = !isRunning;
+        CompressMediumRadio.IsEnabled = !isRunning;
+        CompressHighRadio.IsEnabled = !isRunning;
+    }
+
     private void AppendLog(string message)
     {
+        if (!Dispatcher.CheckAccess())
+        {
+            Dispatcher.Invoke(() => AppendLog(message));
+            return;
+        }
+
         var builder = new StringBuilder();
         builder.Append('[')
                .Append(DateTime.Now.ToString("HH:mm:ss"))

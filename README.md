@@ -75,6 +75,22 @@ SwissKnife/
   - Progress bar durante la divisione
   - Cancellazione operazione
 
+#### Compress PDF (Comprimi PDF)
+- **Ottimizzazione dimensioni**: Riduce le dimensioni dei file PDF
+  - **3 livelli di compressione**:
+    - **Bassa**: Qualità alta, compressione minima
+    - **Media**: Bilanciato (predefinito)
+    - **Alta**: Qualità ridotta, compressione massima
+  - Ottimizzazione struttura PDF
+  - Full compression mode iText7
+  - **Statistiche dettagliate**:
+    - Dimensione originale e compressa
+    - Percentuale di riduzione
+    - Spazio risparmiato
+  - Progress bar per pagina
+  - Cancellazione operazione
+  - Avviso se il file è già ottimizzato
+
 ### 🔄 Convert (In sviluppo)
 Strumenti di conversione file
 
@@ -196,12 +212,15 @@ Fornisce al tool:
 - [x] Progress bar e cancellazione
 - [x] Tool PDF Merge (unisci PDF)
 - [x] Tool PDF Split (dividi PDF)
-- [ ] Tool PDF Compress (comprimi PDF)
+- [x] Tool PDF Compress (comprimi PDF)
 - [ ] Tool Convert (immagini, documenti)
 - [ ] Tool Utility (vari)
 - [ ] Impostazioni persistenti
 - [ ] Supporto temi multipli
 - [ ] Export/Import configurazioni
+- [ ] PDF: Estrazione testo/immagini
+- [ ] PDF: Protezione con password
+- [ ] PDF: Rotazione pagine
 
 ## 🤝 Contribuire
 

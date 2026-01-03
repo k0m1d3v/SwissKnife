@@ -13,6 +13,7 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
             <!-- Card 1: Merge PDF -->
@@ -143,8 +144,59 @@
                 </StackPanel>
             </Border>
 
-            <!-- Card 3: Log -->
-            <Border Grid.Row="2" Style="{StaticResource CardStyle}" Margin="0 12 0 0" Padding="14">
+            <!-- Card 3: Compress PDF -->
+            <Border Grid.Row="2" Style="{StaticResource CardStyle}" Margin="0 12 0 0">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Text="Comprimi PDF" FontSize="18" FontWeight="SemiBold" Foreground="{StaticResource TextPrimaryBrush}"/>
+                        <Border Background="#4CAF50" CornerRadius="8" Padding="8 4" Margin="10 0 0 0">
+                            <TextBlock Text="Compress" FontWeight="Bold" Foreground="White" FontSize="12"/>
+                        </Border>
+                    </StackPanel>
+                    <TextBlock Text="Riduce le dimensioni del file PDF ottimizzando immagini e struttura del documento." Foreground="{StaticResource TextSecondaryBrush}" Margin="0 12 0 0" />
+
+                    <StackPanel Margin="0 12 0 0">
+                        <TextBlock Text="File PDF da comprimere" Foreground="{StaticResource TextSecondaryBrush}" FontSize="12" Margin="0 0 0 4"/>
+                        <Grid Margin="0 0 0 10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox x:Name="CompressFilePathTextBox" VerticalContentAlignment="Center"/>
+                            <Button x:Name="BrowseCompressFileButton" Grid.Column="1" Content="Sfoglia" Style="{StaticResource GhostButtonStyle}" Click="BrowseCompressFileButton_Click" Margin="10 0 0 0" />
+                        </Grid>
+
+                        <TextBlock Text="Livello di compressione" Foreground="{StaticResource TextSecondaryBrush}" FontSize="12" Margin="0 0 0 4"/>
+                        <Border BorderBrush="{StaticResource BorderBrushLight}" BorderThickness="1" CornerRadius="10" Padding="12" Margin="0 0 0 10">
+                            <StackPanel>
+                                <RadioButton x:Name="CompressLowRadio" Content="Bassa (Qualita alta, file piu grande)" Foreground="{StaticResource TextPrimaryBrush}" Margin="0 0 0 6"/>
+                                <RadioButton x:Name="CompressMediumRadio" Content="Media (Bilanciato)" IsChecked="True" Foreground="{StaticResource TextPrimaryBrush}" Margin="0 0 0 6"/>
+                                <RadioButton x:Name="CompressHighRadio" Content="Alta (Qualita bassa, file piu piccolo)" Foreground="{StaticResource TextPrimaryBrush}"/>
+                            </StackPanel>
+                        </Border>
+
+                        <StackPanel Orientation="Horizontal" Margin="0 0 0 10">
+                            <Button x:Name="CompressPdfButton" Content="Comprimi PDF" Style="{StaticResource PrimaryButtonStyle}" Click="CompressPdfButton_Click" Width="140"/>
+                            <Button x:Name="CompressCancelButton" Content="Annulla" Style="{StaticResource GhostButtonStyle}" Click="CompressCancelButton_Click" Width="100" IsEnabled="False" Margin="8 0 0 0"/>
+                        </StackPanel>
+
+                        <StackPanel Margin="0 0 0 10">
+                            <TextBlock Text="Avanzamento" Foreground="{StaticResource TextSecondaryBrush}" FontSize="12"/>
+                            <ProgressBar x:Name="CompressProgressBar" Minimum="0" Maximum="100" Visibility="Collapsed" Margin="0 6 0 0"/>
+                        </StackPanel>
+
+                        <Border x:Name="CompressResultBorder" Background="#191919" BorderBrush="{StaticResource BorderBrushLight}" BorderThickness="1" CornerRadius="10" Padding="12" Visibility="Collapsed">
+                            <StackPanel>
+                                <TextBlock x:Name="CompressResultTextBlock" FontSize="13" FontWeight="SemiBold" Foreground="{StaticResource TextPrimaryBrush}"/>
+                                <TextBlock x:Name="CompressDetailTextBlock" Foreground="{StaticResource TextSecondaryBrush}" FontSize="12" Margin="0 4 0 0" TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <!-- Card 4: Log -->
+            <Border Grid.Row="3" Style="{StaticResource CardStyle}" Margin="0 12 0 0" Padding="14">
                 <StackPanel>
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                         <TextBlock Text="Log" FontSize="14" FontWeight="SemiBold" Foreground="{StaticResource TextPrimaryBrush}"/>

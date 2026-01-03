@@ -103,9 +103,23 @@ public sealed class PdfMergeTool : ITool
             
             throw;
         }
-        catch (iText.IO.Exceptions.IOException pdfEx)
+        catch (iText.Kernel.Exceptions.PdfException pdfEx)
         {
-            return ToolResult.Failure($"Errore PDF: {pdfEx.Message}");
+            var errorMessage = pdfEx.InnerException != null 
+                ? $"{pdfEx.Message} - {pdfEx.InnerException.Message}"
+                : pdfEx.Message;
+            
+            context.Logger?.Invoke($"Errore PDF: {errorMessage}");
+            return ToolResult.Failure($"Errore PDF: {errorMessage}");
+        }
+        catch (iText.IO.Exceptions.IOException pdfIoEx)
+        {
+            var errorMessage = pdfIoEx.InnerException != null 
+                ? $"{pdfIoEx.Message} - {pdfIoEx.InnerException.Message}"
+                : pdfIoEx.Message;
+            
+            context.Logger?.Invoke($"Errore PDF I/O: {errorMessage}");
+            return ToolResult.Failure($"Errore PDF I/O: {errorMessage}");
         }
         catch (UnauthorizedAccessException)
         {
@@ -117,7 +131,12 @@ public sealed class PdfMergeTool : ITool
         }
         catch (Exception ex)
         {
-            return ToolResult.Failure($"Errore inatteso: {ex.Message}");
+            var errorMessage = ex.InnerException != null 
+                ? $"{ex.Message} - {ex.InnerException.Message}"
+                : ex.Message;
+            
+            context.Logger?.Invoke($"Errore inatteso: {errorMessage}");
+            return ToolResult.Failure($"Errore inatteso: {errorMessage}");
         }
     }
 }
