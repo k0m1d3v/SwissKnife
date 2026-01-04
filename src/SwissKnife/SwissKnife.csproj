@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0-windows</TargetFramework>
@@ -8,6 +8,23 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>SwissKnife</RootNamespace>
     <AssemblyName>SwissKnife</AssemblyName>
+    
+    <!-- Informazioni Versione -->
+    <Version>1.0.0</Version>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
+    
+    <!-- Metadati Progetto -->
+    <Authors>k0m1d3v</Authors>
+    <Company>k0m1d3v</Company>
+    <Product>SwissKnife</Product>
+    <Description>Toolbox WPF modulare con strumenti per crittografia e manipolazione PDF</Description>
+    <Copyright>Copyright © 2025 k0m1d3v</Copyright>
+    <PackageProjectUrl>https://github.com/k0m1d3v/SwissKnife</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/k0m1d3v/SwissKnife</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageTags>wpf;tools;utility;cryptography;pdf;dotnet8</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>

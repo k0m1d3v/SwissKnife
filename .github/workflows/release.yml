@@ -1,0 +1,54 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  build:
+    runs-on: windows-latest
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+        
+    - name: Restore dependencies
+      run: dotnet restore
+      
+    - name: Build
+      run: dotnet build -c Release --no-restore
+      
+    - name: Publish Self-Contained
+      run: |
+        dotnet publish src/SwissKnife/SwissKnife.csproj `
+          -c Release `
+          -r win-x64 `
+          --self-contained true `
+          -p:PublishSingleFile=true `
+          -p:IncludeNativeLibrariesForSelfExtract=true `
+          -o publish/win-x64
+          
+    - name: Create Release Package
+      run: |
+        New-Item -Path "release-package" -ItemType Directory -Force
+        Copy-Item -Path "README.md" -Destination "publish/win-x64/"
+        Copy-Item -Path "LICENSE" -Destination "publish/win-x64/"
+        Copy-Item -Path "CHANGELOG.md" -Destination "publish/win-x64/"
+        Compress-Archive -Path "publish/win-x64/*" -DestinationPath "release-package/SwissKnife-${{ github.ref_name }}-win-x64.zip"
+        
+    - name: Create GitHub Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          release-package/SwissKnife-${{ github.ref_name }}-win-x64.zip
+        body_path: RELEASE_NOTES.md
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
